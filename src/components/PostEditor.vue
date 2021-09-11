@@ -1,30 +1,17 @@
 <template>
-  <div class="col-full push-top">
-    <h1>Create new thread in <i>Cooking</i></h1>
-
+  <div class="col-full">
     <form @submit.prevent="save">
       <div class="form-group">
-        <label for="thread_title">Title:</label>
-        <input type="text" id="thread_title" class="form-input" name="title" />
-      </div>
-
-      <div class="form-group">
-        <label for="thread_content">Content:</label>
         <textarea
-          v-model="text"
-          id="thread_content"
+          v-model="postCopy.text"
+          id=""
           class="form-input"
-          name="content"
-          rows="8"
-          cols="140"
+          rows="10"
+          cols="30"
         ></textarea>
       </div>
-
-      <div class="btn-group">
-        <button class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit" name="Publish">
-          Publish
-        </button>
+      <div class="form-actions">
+        <button class="btn-blue">{{ post.id ? 'Update post' : 'Submit post' }}</button>
       </div>
     </form>
   </div>
@@ -32,19 +19,22 @@
 
 <script>
 export default {
+  props: {
+    post: {
+      type: Object,
+      default: () => ({ text: null })
+    }
+  },
   data () {
     return {
-      text: ''
+      postCopy: { ...this.post }
     }
   },
   methods: {
     save () {
-      const post = {
-        text: this.text
-      }
-      this.$emit('save', { post })
+      this.$emit('save', { post: this.postCopy })
 
-      this.text = ''
+      this.postCopy.text = ''
     }
   }
 }
